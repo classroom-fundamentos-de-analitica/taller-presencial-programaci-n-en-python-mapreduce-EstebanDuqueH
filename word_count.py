@@ -15,15 +15,15 @@
 #
 import glob
 import fileinput
+from itertools import groupby
+import os
 
 def load_input(input_directory):
     filenames = glob.glob (input_directory + "/*.txt")
     sequence = []
-    
     with fileinput.input(files=filenames) as f:
         for line in f:
-            sequence.append((fileinput.filename(), line))
-            
+            sequence.append((fileinput.filename(), line))          
     return sequence
             
     
@@ -58,28 +58,26 @@ def mapper(sequence):
 #
 def shuffle_and_sort(sequence):
     sequence=sorted(sequence, key=lambda x: x[0])
-    return(sequence)
+    return sequence
         
 # Escriba la función reducer, la cual recibe el resultado de shuffle_and_sort y
 # reduce los valores asociados a cada clave sumandolos. Como resultado, por
 # ejemplo, la reducción indica cuantas veces aparece la palabra analytics en el
 # texto.
 #
-from itertools import groupby
 
 def reducer(sequence):
-    new_sequence = []
-    for k, g in groupby(sequence, lambda x: x[0]):
+    newsequence = []
+    for k, g in groupby(sequence, key=lambda x: x[0]):
         key=k
-        value=sum(x[1] for x in g)
-        new_sequence.append((key, value))
-    return new_sequence
+        values=sum(x[1] for x in g)
+        newsequence.append((key, values))
+    return newsequence
                   
 #
 # Escriba la función create_ouptput_directory que recibe un nombre de directorio
 # y lo crea. Si el directorio existe, la función falla.
 
-import os.path
 
 def create_ouptput_directory(output_directory):
     if os.path.isdir(output_directory):
