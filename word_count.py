@@ -17,10 +17,7 @@ import glob
 import fileinput
 
 def load_input(input_directory):
-    "carga los archivos y genera la lista de tuplas"
-    
-    filenames = glob.glob(input_directory + "/*.txt")
-    
+    filenames = glob.glob (input_directory + "/*.txt")
     sequence = []
     
     with fileinput.input(files=filenames) as f:
@@ -99,7 +96,7 @@ def create_ouptput_directory(output_directory):
 #
 def save_output(output_directory, sequence):
     filename = os.path.join(output_directory, "part-00000")
-    with open(output_directory + "/part-00000", "w") as f:
+    with open(filename, "w") as f:
         for key, value in sequence:
             f.write(f"{key}\t{value}\n")
 #
@@ -114,6 +111,7 @@ def create_marker(output_directory):
 # Escriba la función job, la cual orquesta las funciones anteriores.
 #
 def job(input_directory, output_directory):
+    
     sequence = load_input(input_directory)
     sequence = mapper(sequence)
     sequence = shuffle_and_sort(sequence)
