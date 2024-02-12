@@ -86,7 +86,7 @@ def create_output_directory(output_directory):
     else:
         os.makedirs(output_directory)
     
-
+#
 # Escriba la función save_output, la cual almacena en un archivo de texto llamado
 # part-00000 el resultado del reducer. El archivo debe ser guardado en el
 # directorio entregado como parámetro, y que se creo en el paso anterior.
