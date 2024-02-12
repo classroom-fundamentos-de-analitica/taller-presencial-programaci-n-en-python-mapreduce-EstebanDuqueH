@@ -15,8 +15,6 @@
 #
 import glob
 import fileinput
-from itertools import groupby
-import os
 
 def load_input(input_directory):
     filenames = glob.glob (input_directory + "/*.txt")
@@ -26,8 +24,7 @@ def load_input(input_directory):
             sequence.append((fileinput.filename(), line))          
     return sequence
             
-    
-#
+
 # Escriba una función llamada maper que recibe una lista de tuplas de la
 # función anterior y retorna una lista de tuplas (clave, valor). En este caso,
 # la clave es cada palabra y el valor es 1, puesto que se está realizando un
@@ -66,23 +63,28 @@ def shuffle_and_sort(sequence):
 # texto.
 #
 
+from itertools import groupby
+
 def reducer(sequence):
-    newsequence = []
-    for k, g in groupby(sequence, key=lambda x: x[0]):
+    new_sequence = []
+    for k, g in groupby(sequence, lambda x: x[0]):
         key=k
-        values=sum(x[1] for x in g)
-        newsequence.append((key, values))
-    return newsequence
+        value=sum( x[1] for x in g)
+        new_sequence.append((key, value))
+    return new_sequence
+    print(key,value)
                   
 #
 # Escriba la función create_ouptput_directory que recibe un nombre de directorio
 # y lo crea. Si el directorio existe, la función falla.
 
+import os.path
 
-def create_ouptput_directory(output_directory):
-    if os.path.isdir(output_directory):
-        raise Exception("Directory already exists")
-    os.mkdir(output_directory)
+def create_output_directory(output_directory):
+    if os.path.exists(output_directory):
+        print("Directory already exists")
+    else:
+        os.makedirs(output_directory)
     
 
 # Escriba la función save_output, la cual almacena en un archivo de texto llamado
@@ -96,7 +98,7 @@ def save_output(output_directory, sequence):
     filename = os.path.join(output_directory, "part-00000")
     with open(filename, "w") as f:
         for key, value in sequence:
-            f.write(f"{key}\t{value}\n")
+           f.write(f"{key}\t{value}\n")
 #
 # La siguiente función crea un archivo llamado _SUCCESS en el directorio
 # entregado como parámetro.
@@ -114,9 +116,10 @@ def job(input_directory, output_directory):
     sequence = mapper(sequence)
     sequence = shuffle_and_sort(sequence)
     sequence = reducer(sequence)
-    create_ouptput_directory(output_directory)
+    create_output_directory(output_directory)
     save_output(output_directory, sequence)
     create_marker(output_directory)
+    #print(sequence)
 
 
 if __name__ == "__main__":
