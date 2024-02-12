@@ -19,15 +19,13 @@ import fileinput
 def load_input(input_directory):
     "carga los archivos y genera la lista de tuplas"
     
-    filenames = glob.glob(input_directory + "/*.*")
+    filenames = glob.glob(input_directory + "/*.txt")
     
     sequence = []
     
     with fileinput.input(files=filenames) as f:
         for line in f:
-            sequence.append(
-                (f.filename(), line)
-            )
+            sequence.append((f.filename(), line))
             
     return sequence
             
@@ -45,8 +43,7 @@ def load_input(input_directory):
 #   ]
 #
 def mapper(sequence):
-    new_sequence= [
-        (word.lower(). replace(".","").replace(",", ""), 1) 
+    new_sequence= [(word.lower().replace(".","").replace(",", ""), 1) 
         for _, line in sequence 
         for word in line.split()
     ]
@@ -63,10 +60,7 @@ def mapper(sequence):
 #   ]
 #
 def shuffle_and_sort(sequence):
-    sequence=sorted(
-    sequence,
-    key=lambda x: x[0]
-    )
+    sequence=sorted(sequence, key=lambda x: x[0])
     return(sequence)
         
 # Escriba la función reducer, la cual recibe el resultado de shuffle_and_sort y
@@ -80,8 +74,8 @@ def reducer(sequence):
     new_sequence = []
     for k, g in groupby(sequence, lambda x: x[0]):
         key=k
-        values=sum(x[1] for x in g)
-        new_sequence.append((key, values))
+        value=sum(x[1] for x in g)
+        new_sequence.append((key, value))
     return new_sequence
                   
 #
