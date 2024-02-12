@@ -25,7 +25,7 @@ def load_input(input_directory):
     
     with fileinput.input(files=filenames) as f:
         for line in f:
-            sequence.append((f.filename(), line))
+            sequence.append((fileinput.filename(), line))
             
     return sequence
             
