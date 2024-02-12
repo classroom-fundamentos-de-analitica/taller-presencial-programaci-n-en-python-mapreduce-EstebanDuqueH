@@ -46,7 +46,7 @@ def load_input(input_directory):
 #
 def mapper(sequence):
     new_sequence= [
-        (word.lower(). replace(".","").replace(".", ""), 1) 
+        (word.lower(). replace(".","").replace(",", ""), 1) 
         for _, line in sequence 
         for word in line.split()
     ]
